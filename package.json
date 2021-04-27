@@ -31,7 +31,7 @@
     "ali",
     "axios-adapter"
   ],
-  "description": "axios微信小程序适配器，可以复用web或者node上的axios请求",
+  "description": "axios支付宝小程序适配器，可以复用web或者node上的axios请求",
   "homepage": "https://github.com/jaluik",
   "files": [
     "dist/",
