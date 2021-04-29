@@ -13,7 +13,7 @@ const AliAdapter: AxiosAdapter = (config) => {
         ),
         data: dataProcessor(config.data),
         method: methodProcessor(config.method),
-        timeout: config.timeout,
+        timeout: 1000,
         success: (res) => {
           const response = {
             data: res.data,
