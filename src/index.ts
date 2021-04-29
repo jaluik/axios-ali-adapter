@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter, AxiosError } from 'axios';
+import { AxiosAdapter, AxiosError } from 'axios';
 import { methodProcessor, dataProcessor, urlProcessor } from './utils';
 
 const AliAdapter: AxiosAdapter = (config) => {

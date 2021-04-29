@@ -32,7 +32,7 @@ export const encode = (val: string | number | boolean): string => {
 /** 方法转换器 */
 export const methodProcessor = (axiosMethod: Method): RequestMethod => {
   const upperCaseMethod = axiosMethod.toUpperCase();
-  const repeatMethod = ['GET', 'POST'];
+  const repeatMethod = ['GET', 'POST', 'PUT', 'DELETE'];
   if (repeatMethod.includes(upperCaseMethod)) {
     return upperCaseMethod as RequestMethod;
   } else {
