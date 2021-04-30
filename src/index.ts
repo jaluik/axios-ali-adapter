@@ -1,5 +1,12 @@
 import { AxiosAdapter, AxiosError } from 'axios';
-import { methodProcessor, dataProcessor, urlProcessor } from './utils';
+import {
+  methodProcessor,
+  dataProcessor,
+  urlProcessor,
+  headerProcessor,
+  successResProcessor,
+  failResProcessor,
+} from './utils';
 
 const AliAdapter: AxiosAdapter = (config) => {
   return new Promise((resolve, reject) => {
@@ -11,26 +18,22 @@ const AliAdapter: AxiosAdapter = (config) => {
           config.params,
           config.paramsSerializer
         ),
+        headers: headerProcessor(config.headers),
         data: dataProcessor(config.data),
         method: methodProcessor(config.method),
-        timeout: 1000,
+        timeout: config.timeout,
         success: (res) => {
-          const response = {
-            data: res.data,
-            status: res.status,
-            statusText: 'request ok',
-            headers: res.headers,
-            config: config,
-            request,
-          };
-          resolve(response);
+          successResProcessor(resolve, reject, res, config, request);
         },
         fail: (res) => {
-          const error = new Error(res.errMsg) as AxiosError;
-          error.config = config;
-          error.request = request;
-          error.isAxiosError = true;
-          reject(error);
+          /** error === 19是http错误，为了保持和微信以及web一致， 4XX和5XX不认为是错误
+           * 这种请求交由axios的statusValidate处理
+           */
+          if (res.error === 19) {
+            successResProcessor(resolve, reject, res, config, request);
+            return;
+          }
+          failResProcessor(reject, res, config, request);
         },
       });
     request();

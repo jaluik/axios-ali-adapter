@@ -1,4 +1,4 @@
-import { Method, AxiosRequestConfig } from 'axios';
+import { Method, AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 import { RequestMethod } from './types';
 
 export const isDate = (val?: any): boolean => {
@@ -96,4 +96,63 @@ export const dataProcessor = (data?: any) => {
     return JSON.parse(data);
   }
   return data;
+};
+
+/** 正确返回处理器
+ * 默认情况下 4xx、5xx请求在微信小程序中属于成功的返回
+ * 因此这里需要对successResult做一次判断过滤
+ *
+ */
+export const successResProcessor = (
+  resolve: (val: AxiosResponse) => void,
+  reject: (err: AxiosError) => void,
+  res: any,
+  config: AxiosRequestConfig,
+  request: () => void
+) => {
+  const { data, status, headers, errorMessage, ...restResult } = res;
+  const response = {
+    data: data,
+    status: status,
+    statusText: errorMessage || 'request ok',
+    headers: headers,
+    config: config,
+    request,
+    ...restResult,
+  };
+  //保持和web逻辑一致
+  if (config.validateStatus && !config.validateStatus(status)) {
+    const error = new Error(
+      `Request failed with status code ${status}`
+    ) as AxiosError;
+    error.config = config;
+    error.request = request;
+    error.response = response;
+    error.isAxiosError = true;
+    reject(error);
+    return;
+  }
+  resolve(response);
+};
+
+/** 错误返回处理器 */
+export const failResProcessor = (
+  reject: (err: AxiosError) => void,
+  res: any,
+  config: AxiosRequestConfig,
+  request: () => void
+) => {
+  const error = new Error(res.errMsg) as AxiosError;
+  error.config = config;
+  error.request = request;
+  error.response = res;
+  error.isAxiosError = true;
+  reject(error);
+};
+
+export const headerProcessor = (header?: { [key: string]: any }) => {
+  if (header?.referer) {
+    delete header.referer;
+  }
+  return header;
 };
