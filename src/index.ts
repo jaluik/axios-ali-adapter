@@ -11,7 +11,7 @@ import {
 const AliAdapter: AxiosAdapter = (config) => {
   return new Promise((resolve, reject) => {
     const request = () =>
-      my.request({
+      (my.request || my.httpRequest)({
         url: urlProcessor(
           config.baseURL,
           config.url,
