@@ -92,5 +92,6 @@ declare namespace my {
 declare global {
   const my: {
     request: (options: my.IHttpRequestOptions) => my.IRequestTask;
+    httpRequest: (options: my.IHttpRequestOptions) => my.IRequestTask;
   };
 }
