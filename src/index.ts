@@ -5,6 +5,7 @@ import {
   urlProcessor,
   headerProcessor,
   successResProcessor,
+  dataTypeProcessor,
   failResProcessor,
 } from './utils';
 
@@ -21,6 +22,7 @@ const AliAdapter: AxiosAdapter = (config) => {
         headers: headerProcessor(config.headers),
         data: dataProcessor(config.data),
         method: methodProcessor(config.method),
+        dataType: dataTypeProcessor(config.responseType),
         timeout: config.timeout,
         success: (res) => {
           successResProcessor(resolve, reject, res, config, request);

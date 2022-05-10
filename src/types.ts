@@ -70,7 +70,7 @@ declare namespace my {
     /**
      * 期望返回的数据格式，默认json，支持json，text，base64
      */
-    dataType?: 'json' | 'text' | 'base64';
+    dataType?: 'json' | 'text' | 'base64' | 'arraybuffer';
 
     /**
      * 调用成功的回调函数

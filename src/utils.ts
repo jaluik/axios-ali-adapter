@@ -65,7 +65,7 @@ export const urlProcessor = (
   if (typeof params === 'object') {
     serializedParam = Object.keys(params)
       .reduce((prev, key) => {
-        const value = params[(key as unknown) as string];
+        const value = params[key as unknown as string];
         if (value === null || value === '') {
           return prev;
         }
@@ -155,4 +155,16 @@ export const headerProcessor = (header?: { [key: string]: any }) => {
     delete header.referer;
   }
   return header;
+};
+
+export const dataTypeProcessor = (
+  dataType?: AxiosRequestConfig['responseType']
+): 'json' | 'text' | 'base64' | 'arraybuffer' => {
+  if (!dataType || dataType === 'json') {
+    return 'json';
+  }
+  if (dataType === 'text') {
+    return 'text';
+  }
+  return 'arraybuffer';
 };

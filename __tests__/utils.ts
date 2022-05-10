@@ -4,6 +4,7 @@ import {
   isDate,
   isJSONstr,
   dataProcessor,
+  dataTypeProcessor,
 } from './../src/utils';
 
 describe('Test urlProcessor', () => {
@@ -90,5 +91,14 @@ describe('Test dataProcessor', () => {
   it('should test right with dataProcessor', () => {
     expect(dataProcessor('{"a":0}')).toEqual({ a: 0 });
     expect(dataProcessor(true)).toBeTruthy();
+  });
+});
+
+describe('Test dataTypeProcessor', () => {
+  it('should test right with different axiosResponseType', () => {
+    expect(dataTypeProcessor()).toBe('json');
+    expect(dataTypeProcessor('json')).toBe('json');
+    expect(dataTypeProcessor('text')).toBe('text');
+    expect(dataTypeProcessor('arraybuffer')).toBe('arraybuffer');
   });
 });
