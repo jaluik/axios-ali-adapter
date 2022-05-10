@@ -22,6 +22,7 @@ const AliAdapter: AxiosAdapter = (config) => {
         data: dataProcessor(config.data),
         method: methodProcessor(config.method),
         timeout: config.timeout,
+        dataType: 'text',
         success: (res) => {
           successResProcessor(resolve, reject, res, config, request);
         },
