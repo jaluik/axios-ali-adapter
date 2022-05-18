@@ -1,4 +1,4 @@
-import { AxiosAdapter, AxiosError } from 'axios';
+import { AxiosAdapter } from 'axios';
 import {
   methodProcessor,
   dataProcessor,
